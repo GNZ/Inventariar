@@ -1,0 +1,63 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="com.gonza.inventariar.inventariar.InitialActivity">
+
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@drawable/initial_pic">
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="162dp"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/iniciarRetomar_button"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/iniciarRetomar_string"
+                android:layout_gravity="center|top"
+                android:background="@drawable/transparent_button_border"
+                android:textColor="@android:color/holo_blue_dark"
+                android:layout_marginBottom="50dp"/>
+
+            <Button
+                android:id="@+id/compartir_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/compartir_string"
+                android:background="@drawable/transparent_button_border"
+                android:textColor="@android:color/holo_blue_dark"
+                android:layout_gravity="center|bottom" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

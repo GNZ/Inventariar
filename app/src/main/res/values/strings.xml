@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">InventariarApp</string>
+
+    <string name="iniciarRetomar_string">Iniciar/Retomar</string>
+    <string name="compartir_string">Compartir reporte</string>
+</resources>
