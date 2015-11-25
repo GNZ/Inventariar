@@ -3,4 +3,8 @@
 
     <string name="iniciarRetomar_string">Iniciar/Retomar</string>
     <string name="compartir_string">Compartir reporte</string>
+
+    <string name="title_activity_wait_scann">WaitScannActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

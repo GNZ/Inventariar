@@ -1,15 +1,17 @@
 package com.gonza.inventariar.inventariar;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.net.Uri;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -19,7 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class InitialActivity extends AppCompatActivity {
+public class WaitScannActivity extends Activity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -38,9 +40,11 @@ public class InitialActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private View mContentView;
-    private Button iniciarRetomarButton;
-    private Button compartirButton;
+    private TextView mContentView;
+    private EditText barcode;
+    private TextView showTextView;
+    private final int scapeChar = KeyEvent.KEYCODE_ENTER;
+    //
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -63,7 +67,7 @@ public class InitialActivity extends AppCompatActivity {
         @Override
         public void run() {
             // Delayed display of UI elements
-            ActionBar actionBar = getSupportActionBar();
+            ActionBar actionBar = getActionBar();
             if (actionBar != null) {
                 actionBar.show();
             }
@@ -85,7 +89,7 @@ public class InitialActivity extends AppCompatActivity {
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE){
+            if (AUTO_HIDE) {
                 delayedHide(AUTO_HIDE_DELAY_MILLIS);
             }
             return false;
@@ -101,17 +105,16 @@ public class InitialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_initial);
+        setContentView(R.layout.activity_wait_scann);
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        mContentView = findViewById(R.id.fullscreen_content);
-        //Buttons
-        iniciarRetomarButton = (Button) findViewById(R.id.iniciarRetomar_button);
-        compartirButton = (Button) findViewById(R.id.compartir_button);
+        mContentView = (TextView) findViewById(R.id.fullscreen_content);
+        barcode = (EditText) findViewById(R.id.barcode_text);
+        showTextView = (TextView) findViewById(R.id.show_textView);
+        barcode.setOnEditorActionListener(new BarcodeEdittextListener());
+        barcode.requestFocus();
 
-        //Listener
-        iniciarRetomarButton.setOnClickListener(new iniciarRetomarListener());
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +123,10 @@ public class InitialActivity extends AppCompatActivity {
                 toggle();
             }
         });
+        mContentView.setText("Escaneé el código de localización");
+        // Upon interacting with UI controls, delay any scheduled hide()
+        // operations to prevent the jarring behavior of controls going away
+        // while interacting with the UI.
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -145,7 +152,7 @@ public class InitialActivity extends AppCompatActivity {
 
     private void hide() {
         // Hide UI first
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
@@ -187,7 +194,7 @@ public class InitialActivity extends AppCompatActivity {
         client.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Initial Page", // TODO: Define a title for the content shown.
+                "WaitScann Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -206,7 +213,7 @@ public class InitialActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Initial Page", // TODO: Define a title for the content shown.
+                "WaitScann Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -218,15 +225,16 @@ public class InitialActivity extends AppCompatActivity {
         client.disconnect();
     }
 
-    private class iniciarRetomarListener implements View.OnClickListener {
+    private class BarcodeEdittextListener implements TextView.OnEditorActionListener {
 
         @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(InitialActivity.this, WaitScannActivity.class);
-            startActivity(intent);
-
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if ( (actionId == EditorInfo.IME_ACTION_DONE) || (event.getAction() == KeyEvent.ACTION_DOWN) && event.getKeyCode() == scapeChar ){
+                String code = v.getText().toString();
+                showTextView.setText(code);
+                return true;
+            }
+            return false;
         }
     }
-
-
 }
