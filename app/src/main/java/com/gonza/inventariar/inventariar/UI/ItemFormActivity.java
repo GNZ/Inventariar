@@ -3,6 +3,10 @@ package com.gonza.inventariar.inventariar.UI;
 import android.app.Activity;
 import android.os.Bundle;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import com.gonza.inventariar.inventariar.R;
 
 

@@ -14,6 +14,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 import com.gonza.inventariar.inventariar.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -42,9 +45,9 @@ public class WaitScannActivity extends Activity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private TextView mContentView;
-    private EditText barcode;
-    private TextView showTextView;
+    @Bind(R.id.fullscreen_content) TextView mContentView;
+    @Bind(R.id.barcode_text) EditText barcode;
+    @Bind(R.id.show_textView) TextView showTextView;
     private int scannType;
     private static final int SCANN_LOCATION = 0;
     private static final int SCANN_ITEM = 1;
@@ -67,7 +70,7 @@ public class WaitScannActivity extends Activity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-    private View mControlsView;
+    @Bind(R.id.fullscreen_content_controls) View mControlsView;
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -112,12 +115,9 @@ public class WaitScannActivity extends Activity {
         Intent waitScannActivity = getIntent();
         scannType = waitScannActivity.getIntExtra("scannType",0);
         setContentView(R.layout.activity_wait_scann);
+        ButterKnife.bind(this);
 
         mVisible = true;
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
-        mContentView = (TextView) findViewById(R.id.fullscreen_content);
-        barcode = (EditText) findViewById(R.id.barcode_text);
-        showTextView = (TextView) findViewById(R.id.show_textView);
         barcode.setOnEditorActionListener(new BarcodeEdittextListener());
         barcode.requestFocus();
 

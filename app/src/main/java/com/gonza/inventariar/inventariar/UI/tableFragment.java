@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import com.gonza.inventariar.inventariar.Elements.Value;
 import com.gonza.inventariar.inventariar.R;
 
@@ -28,7 +32,7 @@ public class tableFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     //table
-    private TableLayout table;
+    @Bind(R.id.table) TableLayout table;
     private int col = 2;
 
     private String[] vals;
@@ -76,7 +80,7 @@ public class tableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_table, container, false);
-
+        ButterKnife.bind(this,rootView);
         // TODO get the number of elements
         elements = 4;
         //create table

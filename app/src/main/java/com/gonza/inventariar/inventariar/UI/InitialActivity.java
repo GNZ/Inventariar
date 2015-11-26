@@ -11,6 +11,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import com.gonza.inventariar.inventariar.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -39,9 +43,9 @@ public class InitialActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private View mContentView;
-    private Button iniciarRetomarButton;
-    private Button compartirButton;
+    @Bind(R.id.fullscreen_content) View mContentView;
+    @Bind(R.id.iniciarRetomar_button) Button iniciarRetomarButton;
+    @Bind(R.id.compartir_button) Button compartirButton;
     private static final int SCANN_LOCATION = 0;
     private static final int SCANN_ITEM = 1;
     private final Runnable mHidePart2Runnable = new Runnable() {
@@ -61,7 +65,7 @@ public class InitialActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-    private View mControlsView;
+    @Bind(R.id.fullscreen_content_controls) View mControlsView;
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -106,15 +110,10 @@ public class InitialActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_initial);
 
-        mVisible = true;
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
-        mContentView = findViewById(R.id.fullscreen_content);
-        //Buttons
-        iniciarRetomarButton = (Button) findViewById(R.id.iniciarRetomar_button);
-        compartirButton = (Button) findViewById(R.id.compartir_button);
+        ButterKnife.bind(this);
 
-        //Listener
-        iniciarRetomarButton.setOnClickListener(new iniciarRetomarListener());
+        mVisible = true;
+
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +125,12 @@ public class InitialActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    @OnClick(R.id.iniciarRetomar_button) void iniciarRetomar(){
+        Intent waitScannActivity = new Intent(InitialActivity.this, WaitScannActivity.class);
+        waitScannActivity.putExtra("scannType",SCANN_LOCATION);
+        startActivity(waitScannActivity);
     }
 
     @Override
@@ -219,17 +224,6 @@ public class InitialActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
-    }
-
-    private class iniciarRetomarListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            Intent waitScannActivity = new Intent(InitialActivity.this, WaitScannActivity.class);
-            waitScannActivity.putExtra("scannType",SCANN_LOCATION);
-            startActivity(waitScannActivity);
-
-        }
     }
 
 
