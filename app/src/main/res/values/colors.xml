@@ -5,4 +5,10 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="black_overlay">#66000000</color>
+
+    //main_activiy colors
+    <color name="container_background">#3399ff</color>
+    <color name="label_text">#FFFFFF</color>
 </resources>
+
+

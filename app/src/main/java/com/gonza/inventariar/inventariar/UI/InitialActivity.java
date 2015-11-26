@@ -1,4 +1,4 @@
-package com.gonza.inventariar.inventariar;
+package com.gonza.inventariar.inventariar.UI;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.gonza.inventariar.inventariar.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -41,6 +42,8 @@ public class InitialActivity extends AppCompatActivity {
     private View mContentView;
     private Button iniciarRetomarButton;
     private Button compartirButton;
+    private static final int SCANN_LOCATION = 0;
+    private static final int SCANN_ITEM = 1;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -222,8 +225,9 @@ public class InitialActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(InitialActivity.this, WaitScannActivity.class);
-            startActivity(intent);
+            Intent waitScannActivity = new Intent(InitialActivity.this, WaitScannActivity.class);
+            waitScannActivity.putExtra("scannType",SCANN_LOCATION);
+            startActivity(waitScannActivity);
 
         }
     }

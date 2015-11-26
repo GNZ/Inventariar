@@ -1,8 +1,9 @@
-package com.gonza.inventariar.inventariar;
+package com.gonza.inventariar.inventariar.UI;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.gonza.inventariar.inventariar.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -43,6 +45,9 @@ public class WaitScannActivity extends Activity {
     private TextView mContentView;
     private EditText barcode;
     private TextView showTextView;
+    private int scannType;
+    private static final int SCANN_LOCATION = 0;
+    private static final int SCANN_ITEM = 1;
     private final int scapeChar = KeyEvent.KEYCODE_ENTER;
     //
     private final Runnable mHidePart2Runnable = new Runnable() {
@@ -104,7 +109,8 @@ public class WaitScannActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Intent waitScannActivity = getIntent();
+        scannType = waitScannActivity.getIntExtra("scannType",0);
         setContentView(R.layout.activity_wait_scann);
 
         mVisible = true;
@@ -123,7 +129,15 @@ public class WaitScannActivity extends Activity {
                 toggle();
             }
         });
-        mContentView.setText("Escaneé el código de localización");
+
+        //Fill the with text of the showtextview
+        String content;
+        if (scannType == SCANN_LOCATION)
+            content = getResources().getString(R.string.waitLocation);
+        else content = getResources().getString(R.string.waitItem);
+        showTextView.setText(content);
+
+
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
@@ -229,10 +243,23 @@ public class WaitScannActivity extends Activity {
 
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            if ( (actionId == EditorInfo.IME_ACTION_DONE) || (event.getAction() == KeyEvent.ACTION_DOWN) && event.getKeyCode() == scapeChar ){
+            if ( (actionId == EditorInfo.IME_ACTION_DONE) ||
+                    (event.getAction() == KeyEvent.ACTION_DOWN) && event.getKeyCode() == scapeChar ){
                 String code = v.getText().toString();
-                showTextView.setText(code);
-                return true;
+                if (scannType == SCANN_LOCATION) {
+                    Intent mainActivity = new Intent(WaitScannActivity.this, main.class);
+                    mainActivity.putExtra("Location", code);
+                    startActivity(mainActivity);
+                    finish();
+                    return true;
+                }
+                else {
+                    Intent itemFormActivity = new Intent(WaitScannActivity.this, ItemFormActivity.class);
+                    itemFormActivity.putExtra("Item", code);
+                    startActivity(itemFormActivity);
+                    finish();
+                    return true;
+                }
             }
             return false;
         }

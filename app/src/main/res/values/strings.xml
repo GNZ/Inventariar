@@ -5,6 +5,22 @@
     <string name="compartir_string">Compartir reporte</string>
 
     <string name="title_activity_wait_scann">WaitScannActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- main_activity-->
+    <string name="add_button">Agregar item</string>
+    <string name="finish_button">Terminar</string>
+
+    <!-- string array from table columns -->
+    <array name="columnValues">
+        <item>Nombre</item>
+        <item>Código</item>
+    </array>
+
+    <!-- WaitScannActivity -->
+    <string name="waitLocation">Escaneé el código de localización</string>
+    <string name="waitItem">Escaneé el código del artículo</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
