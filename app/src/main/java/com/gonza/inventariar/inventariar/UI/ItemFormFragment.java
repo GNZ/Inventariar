@@ -1,9 +1,15 @@
 package com.gonza.inventariar.inventariar.UI;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +20,9 @@ import android.widget.Spinner;
 
 import com.gonza.inventariar.inventariar.R;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +40,10 @@ public class ItemFormFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "ItemFromFragment";
+    private static final int RESULT_LOAD_IMAGE = 1;
+    private static final String FOLDER_NAME = "Inventariar";
+    private static final int IMAGE_SCALED = 80;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -40,7 +51,7 @@ public class ItemFormFragment extends Fragment {
 
     @Bind(R.id.inventory_editText) EditText inventoryEditText;
     @Bind(R.id.name_editText) EditText nameEditText;
-    @Bind(R.id.number_editText) EditText numberEditText;
+    @Bind(R.id.barcode_editText) EditText barcodeEditText;
     @Bind(R.id.brand_spinner) Spinner brandSpinner;
     @Bind(R.id.category_spinner) Spinner categorySpinner;
     @Bind(R.id.pic1_imageView) ImageView pic1;
@@ -49,6 +60,13 @@ public class ItemFormFragment extends Fragment {
     @Bind(R.id.pic4_imageView) ImageView pic4;
     @Bind(R.id.description_editText) EditText descriptionEditText;
     @Bind(R.id.value_editText) EditText valueEditText;
+    private boolean thereIsBarcode = false;
+    private String barcode;
+    private View.OnClickListener addPicListener;
+    private int picViewImagePress;
+    private String folderPath;
+    private String tempFolderPath;
+    private ImageView[] picArray;
 
     private OnFragmentInteractionListener mListener;
 
@@ -90,6 +108,12 @@ public class ItemFormFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_item_form, container, false);
         ButterKnife.bind(this,rootView);
 
+        picArray = new ImageView[]{pic1,pic2,pic3,pic4};
+
+        for (int i = 1; i<picArray.length; i++){
+            picArray[i].setClickable(false);
+        }
+
         ArrayAdapter<CharSequence> spinnerCategoryArrayAdapter = ArrayAdapter.createFromResource(
                 getActivity(), R.array.categorys, android.R.layout.simple_spinner_item);
         categorySpinner.setAdapter(spinnerCategoryArrayAdapter);
@@ -97,6 +121,26 @@ public class ItemFormFragment extends Fragment {
         ArrayAdapter<CharSequence> spinnerBrandArrayAdapter = ArrayAdapter.createFromResource(
                 getActivity(), R.array.brands, android.R.layout.simple_spinner_item);
         brandSpinner.setAdapter(spinnerBrandArrayAdapter);
+
+        if (thereIsBarcode){
+            barcodeEditText.setText(barcode);
+            barcodeEditText.setKeyListener(null);
+        }
+
+        //Folder name
+        folderPath = Environment.getExternalStorageDirectory()+File.separator +FOLDER_NAME + File.separator;
+        tempFolderPath = folderPath+"temp.jpg";
+
+        //Check if your application folder exists in the external storage, if not create it:
+        File imageStorageFolder = new File(folderPath);
+        if (!imageStorageFolder.exists()) {
+            imageStorageFolder.mkdirs();
+            Log.d(TAG , "Folder created at: "+imageStorageFolder.toString());
+        }
+
+        addPicListener = new AddPicListener();
+
+        pic1.setOnClickListener(addPicListener);
 
         return rootView;
     }
@@ -139,4 +183,108 @@ public class ItemFormFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void setItemBarcode(String barcode){
+        thereIsBarcode = true;
+        this.barcode = barcode;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == RESULT_LOAD_IMAGE) {
+
+
+            //Check if data in not null and extract the Bitmap:
+            if (data != null) {
+                //TODO check inventoryEditText not null
+
+                String filename = inventoryEditText.getText().toString()+picViewImagePress+".jpg";
+                File sdCard = Environment.getExternalStorageDirectory();
+                String imageStorageFolderPath = File.separator + FOLDER_NAME + File.separator;
+                File destinationFile = new File(sdCard, imageStorageFolderPath + filename);
+                Log.d(TAG, "the destination for image file is: " + destinationFile);
+                if (data.getExtras() != null) {
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                    try {
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        bitmap = Bitmap.createScaledBitmap(bitmap, 320, 640, false);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_SCALED, bytes);
+                        FileOutputStream out = new FileOutputStream(destinationFile);
+                        out.write(bytes.toByteArray());
+                        out.close();
+                        refreshImageViews(destinationFile.getAbsolutePath());
+                        //TODO remove took picture
+                    } catch (Exception e) {
+                        Log.e(TAG, "ERROR:" + e.toString());
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    private void setPic(String pathToImage) {
+        // Get the dimensions of the View
+        int targetW = picArray[picViewImagePress].getWidth();
+        int targetH = picArray[picViewImagePress].getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(pathToImage, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(pathToImage, bmOptions);
+        picArray[picViewImagePress].setImageBitmap(bitmap);
+    }
+
+
+    private void refreshImageViews(String imagePath ){
+       setPic(imagePath);
+        if (picViewImagePress < 3){
+            picArray[picViewImagePress+1].setImageResource(R.drawable.add_image);
+            picArray[picViewImagePress+1].setClickable(true);
+            picArray[picViewImagePress+1].setOnClickListener(addPicListener);
+        }
+    }
+
+
+    class AddPicListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.pic1_imageView:
+                    picViewImagePress = 0;
+                    //TODO open camera and take the picture
+                    break;
+                case R.id.pic2_imageView:
+                    picViewImagePress = 1;
+                    break;
+                case R.id.pic3_imageView:
+                    picViewImagePress = 2;
+                    break;
+                case R.id.pic4_imageView:
+                    picViewImagePress = 3;
+                    break;
+            }
+            openCamera();
+        }
+
+    }
+
+    private void openCamera() {
+        Intent photoPickerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
+    }
+
+
 }

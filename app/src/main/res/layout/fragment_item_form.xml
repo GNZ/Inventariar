@@ -35,7 +35,7 @@
             <EditText
                 android:layout_width="224dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/number_editText"
+                android:id="@+id/barcode_editText"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:hint="@string/number_hint"
@@ -57,30 +57,32 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="15dp"
                     android:layout_height="match_parent"
                     android:id="@+id/pic1_imageView"
+                    android:src="@drawable/add_image"
                     android:layout_weight="0.25" />
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="15dp"
                     android:layout_height="match_parent"
                     android:id="@+id/pic2_imageView"
                     android:layout_weight="0.25" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="15dp"
                     android:layout_height="match_parent"
                     android:id="@+id/pic3_imageView"
                     android:layout_weight="0.25" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="15dp"
                     android:layout_height="match_parent"
                     android:id="@+id/pic4_imageView"
                     android:layout_weight="0.25" />

@@ -1,7 +1,6 @@
 package com.gonza.inventariar.inventariar.UI;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.widget.Button;
@@ -19,6 +18,7 @@ public class ItemFormActivity extends Activity {
     @Bind(R.id.add_button) Button addButton;
     @Bind(R.id.fragment_container) FrameLayout fragmentContainer;
     private ItemFormFragment itemFormFragment;
+    private String itemBarcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +26,18 @@ public class ItemFormActivity extends Activity {
         setContentView(R.layout.activity_item_form);
         ButterKnife.bind(this);
 
+        //Get item's barcode
+        itemBarcode = getIntent().getStringExtra("Item");
+        // Create ItemFormFragment and pass item's barcode if the user pass it
+        itemFormFragment = new ItemFormFragment();
+
+        if (!itemBarcode.equals("N/A")){
+            itemFormFragment.setItemBarcode(itemBarcode);
+        }
 
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        itemFormFragment = new ItemFormFragment();
 
         ft.add(R.id.fragment_container, itemFormFragment);
         ft.commit();

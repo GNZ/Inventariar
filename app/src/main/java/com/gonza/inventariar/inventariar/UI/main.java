@@ -25,9 +25,9 @@ public class main extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        // Get the location code
-        Intent mainActivity = getIntent();
-        String location_code = mainActivity.getStringExtra("Location");
+
+        // Get location's barcode
+        String location_code = getIntent().getStringExtra("Location");
 
         location_textView.setText("Locación: "+location_code);
     }

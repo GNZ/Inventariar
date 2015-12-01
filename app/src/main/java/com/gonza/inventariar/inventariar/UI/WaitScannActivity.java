@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import com.gonza.inventariar.inventariar.R;
 import com.google.android.gms.appindexing.Action;
@@ -267,5 +268,12 @@ public class WaitScannActivity extends Activity {
             }
             return false;
         }
+    }
+
+    @OnClick(R.id.omit_button) void omitButtonAction () {
+        Intent itemFormActivity = new Intent(WaitScannActivity.this, ItemFormActivity.class);
+        itemFormActivity.putExtra("Item", "N/A");
+        startActivity(itemFormActivity);
+        finish();
     }
 }
