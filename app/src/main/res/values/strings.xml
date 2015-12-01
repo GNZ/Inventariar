@@ -19,8 +19,29 @@
     <!-- WaitScannActivity -->
     <string name="waitLocation">Escaneé el código de localización</string>
     <string name="waitItem">Escaneé el código del artículo</string>
+    <string name="omit_button">Omitir</string>
 
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- ItemFormFragment -->
+    <string name="inventory_hint">Código de inventario</string>
+    <string name="name_hint">Nombre</string>
+    <string name="number_hint">Número de serie</string>
+    <string name="description_hint">Descripción</string>
+    <string name="value_hint">Valor del bien</string>
+    <array name="brands">
+        <item>Marca 1</item>
+        <item>Marca 2</item>
+        <item>Marca 3</item>
+        <item>Marca 4</item>
+        <item>Marca 5</item>
+    </array>
+
+    <array name="categorys">
+        <item>Categoria 1</item>
+        <item>Categoria 2</item>
+        <item>Categoria 3</item>
+        <item>Categoria 4</item>
+        <item>Categoria 5</item>
+    </array>
+
 </resources>

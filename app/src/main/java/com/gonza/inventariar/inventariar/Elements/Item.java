@@ -1,9 +1,11 @@
 package com.gonza.inventariar.inventariar.Elements;
 
 
-public class Item {
+import com.orm.SugarRecord;
+
+public class Item extends SugarRecord<Item> {
     private String inventoryCode;
-    private String localization;
+    private Localization localization;
     private String name;
     private String category;
     private String brand;
@@ -12,7 +14,10 @@ public class Item {
     private String value;
     private int pictures;
 
-    public Item(String inventoryCode,String localization, String name, String category) {
+    public Item(){
+    }
+
+    public Item(String inventoryCode,Localization localization, String name, String category) {
         this.inventoryCode = inventoryCode;
         this.name = name;
         this.category = category;
@@ -23,7 +28,7 @@ public class Item {
         return inventoryCode;
     }
 
-    public String getLocalization(){
+    public Localization getLocalization(){
         return localization;
     }
 

@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class WaitScannActivity extends Activity {
     @Bind(R.id.fullscreen_content) TextView mContentView;
     @Bind(R.id.barcode_text) EditText barcode;
     @Bind(R.id.show_textView) TextView showTextView;
+    @Bind(R.id.omit_button) Button omitButton;
     private int scannType;
     private static final int SCANN_LOCATION = 0;
     private static final int SCANN_ITEM = 1;
@@ -132,8 +134,10 @@ public class WaitScannActivity extends Activity {
 
         //Fill the with text of the showtextview
         String content;
-        if (scannType == SCANN_LOCATION)
+        if (scannType == SCANN_LOCATION) {
             content = getResources().getString(R.string.waitLocation);
+            omitButton.setVisibility(View.GONE);
+        }
         else content = getResources().getString(R.string.waitItem);
         showTextView.setText(content);
 

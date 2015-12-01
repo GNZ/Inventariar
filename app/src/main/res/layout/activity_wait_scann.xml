@@ -50,9 +50,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/show_textView"
             android:layout_gravity="center" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/omit_button"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/transparent_button_border"
+            android:textColor="@android:color/holo_blue_dark"
+            android:id="@+id/omit_button"
+            android:layout_gravity="center_horizontal|bottom" />
     </FrameLayout>
 
 </FrameLayout>
