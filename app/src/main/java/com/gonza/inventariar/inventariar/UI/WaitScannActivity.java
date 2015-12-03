@@ -55,6 +55,7 @@ public class WaitScannActivity extends Activity {
     private static final int SCANN_LOCATION = 0;
     private static final int SCANN_ITEM = 1;
     private final int scapeChar = KeyEvent.KEYCODE_ENTER;
+    private String localization;
     //
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -139,7 +140,10 @@ public class WaitScannActivity extends Activity {
             content = getResources().getString(R.string.waitLocation);
             omitButton.setVisibility(View.GONE);
         }
-        else content = getResources().getString(R.string.waitItem);
+        else {
+            localization = waitScannActivity.getStringExtra("Localization");
+            content = getResources().getString(R.string.waitItem);
+        }
         showTextView.setText(content);
 
 
@@ -261,6 +265,7 @@ public class WaitScannActivity extends Activity {
                 else {
                     Intent itemFormActivity = new Intent(WaitScannActivity.this, ItemFormActivity.class);
                     itemFormActivity.putExtra("Item", code);
+                    itemFormActivity.putExtra("Localization",localization);
                     startActivity(itemFormActivity);
                     finish();
                     return true;
@@ -273,6 +278,7 @@ public class WaitScannActivity extends Activity {
     @OnClick(R.id.omit_button) void omitButtonAction () {
         Intent itemFormActivity = new Intent(WaitScannActivity.this, ItemFormActivity.class);
         itemFormActivity.putExtra("Item", "N/A");
+        itemFormActivity.putExtra("Localization",localization);
         startActivity(itemFormActivity);
         finish();
     }

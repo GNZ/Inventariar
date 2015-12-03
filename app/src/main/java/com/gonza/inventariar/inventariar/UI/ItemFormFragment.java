@@ -17,7 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.gonza.inventariar.inventariar.Elements.Item;
 import com.gonza.inventariar.inventariar.R;
 
 import java.io.ByteArrayOutputStream;
@@ -64,6 +66,7 @@ public class ItemFormFragment extends Fragment {
     private String barcode;
     private View.OnClickListener addPicListener;
     private int picViewImagePress;
+    private int picNumber = 0;
     private String folderPath;
     private String tempFolderPath;
     private ImageView[] picArray;
@@ -189,14 +192,33 @@ public class ItemFormFragment extends Fragment {
         this.barcode = barcode;
     }
 
+    public boolean checkAndGetItem(Item item){
+        String inventoryCode = inventoryEditText.getText().toString();
+        String name = nameEditText.getText().toString();
+        boolean check = !inventoryCode.equals("") &&
+                !name.equals("");
+        if (!check){
+            String msg = getResources().getString(R.string.msg_noObligatoryFields);
+            Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        item.setInventoryCode(inventoryCode);
+        item.setName(name);
+        item.setBrand(brandSpinner.getSelectedItem().toString());
+        item.setCategory(categorySpinner.getSelectedItem().toString());
+        item.setPictures(picNumber);
+        if (!barcodeEditText.getText().toString().equals("")) item.setBarCode(barcodeEditText.getText().toString());
+        if (!descriptionEditText.getText().toString().equals("")) item.setDescription(descriptionEditText.getText().toString());
+        if (!valueEditText.getText().toString().equals("")) item.setValue(valueEditText.getText().toString());
+        return true;
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == RESULT_LOAD_IMAGE) {
 
 
             //Check if data in not null and extract the Bitmap:
             if (data != null) {
-                //TODO check inventoryEditText not null
-
                 String filename = inventoryEditText.getText().toString()+picViewImagePress+".jpg";
                 File sdCard = Environment.getExternalStorageDirectory();
                 String imageStorageFolderPath = File.separator + FOLDER_NAME + File.separator;
@@ -250,6 +272,7 @@ public class ItemFormFragment extends Fragment {
 
     private void refreshImageViews(String imagePath ){
        setPic(imagePath);
+        picNumber = picViewImagePress+1;
         if (picViewImagePress < 3){
             picArray[picViewImagePress+1].setImageResource(R.drawable.add_image);
             picArray[picViewImagePress+1].setClickable(true);
@@ -259,8 +282,15 @@ public class ItemFormFragment extends Fragment {
 
 
     class AddPicListener implements View.OnClickListener {
+
+
         @Override
         public void onClick(View v) {
+            if (inventoryEditText.getText().toString().equals("")){
+                String msg = getResources().getString(R.string.msg_noInventoryCode);
+                Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+                return;
+            }
             switch (v.getId()){
                 case R.id.pic1_imageView:
                     picViewImagePress = 0;

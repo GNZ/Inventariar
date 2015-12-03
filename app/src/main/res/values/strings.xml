@@ -6,9 +6,12 @@
 
     <string name="title_activity_wait_scann">WaitScannActivity</string>
 
-    <!-- main_activity-->
+    <!-- main-->
     <string name="add_button">Agregar item</string>
     <string name="finish_button">Terminar</string>
+    <string name="new_location_add">Nueva locación agregada</string>
+    <string name="inventroy_column">Código</string>
+    <string name="name_column">Nombre</string>
 
     <!-- string array from table columns -->
     <array name="columnValues">
@@ -28,6 +31,8 @@
     <string name="number_hint">Número de serie</string>
     <string name="description_hint">Descripción</string>
     <string name="value_hint">Valor del bien</string>
+    <string name="msg_noInventoryCode">Complete el número de inventario del item</string>
+    <string name="msg_noObligatoryFields">Complete el número de inventario del item</string>
     <array name="brands">
         <item>Marca 1</item>
         <item>Marca 2</item>

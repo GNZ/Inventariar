@@ -1,15 +1,63 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.gonza.inventariar.inventariar.UI.tableFragment">
 
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_height="50dp">
+
+        <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_border"
+        android:id="@+id/relativeLayout2">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/inventroy_column" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="2dip"
+            android:layout_gravity="center"
+            android:layout_height="fill_parent"
+            android:layout_weight="0"
+            android:background="#FF909090" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:background="@drawable/bottom_border">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/name_column"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
     <TableLayout
         android:id="@+id/table"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
-
+        android:layout_height="568dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentBottom="true">
     </TableLayout>
-</FrameLayout>
+
+
+</RelativeLayout>

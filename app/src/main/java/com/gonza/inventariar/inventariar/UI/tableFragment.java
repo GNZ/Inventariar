@@ -1,22 +1,28 @@
 package com.gonza.inventariar.inventariar.UI;
 
+import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.TableRow.LayoutParams;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import com.gonza.inventariar.inventariar.Elements.Item;
 import com.gonza.inventariar.inventariar.Elements.Value;
 import com.gonza.inventariar.inventariar.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +44,7 @@ public class tableFragment extends Fragment {
     private String[] vals;
     private ArrayList<Value> values;
     private int elements;
+    private List<Item> items;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -87,18 +94,23 @@ public class tableFragment extends Fragment {
         vals = getResources().getStringArray(R.array.columnValues);
         values = new ArrayList<Value>();
 
-        for (int i = 0; i < elements; i++){
-            // TODO add elements to the list from de database
-            //String name = "";
-            //String code = "";
-            //Value value = new Value(name,code);
-            //values.add(value);
+        if (items != null || !items.isEmpty()) {
+            for (Item e: items) {
+                TableRow tr = (TableRow) inflater.inflate(R.layout.row_table,null,false);
+
+                //Create a TextView for the inventory code
+                ((TextView)tr.findViewById(R.id.inventory_TextView)).setText(e.getInventoryCode());
+
+                // Create a TextView for the name
+                ((TextView)tr.findViewById(R.id.name_TextView)).setText(e.getName());
+
+                //add row to the table
+                table.addView(tr, new LayoutParams(
+                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.WRAP_CONTENT));
+
+            }
         }
-
-        
-
-
-
         return rootView;
     }
 
@@ -124,6 +136,10 @@ public class tableFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setItemList(List<Item> items){
+        this.items = items;
     }
 
     /**

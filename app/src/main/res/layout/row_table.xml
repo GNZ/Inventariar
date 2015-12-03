@@ -1,0 +1,48 @@
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_weight="0.5"
+        android:layout_height="50dp"
+        android:background="@drawable/bottom_border_tablerow">
+
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/inventory_TextView"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="inventory"
+        android:textColor="@android:color/holo_blue_dark"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="2dip"
+        android:layout_gravity="center"
+        android:layout_height="fill_parent"
+        android:layout_weight="0"
+        android:background="#FF909090" />
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_weight="0.5"
+        android:layout_height="50dp"
+        android:background="@drawable/bottom_border_tablerow">
+            <TextView
+                android:textColor="@android:color/holo_blue_dark"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="name"
+                android:id="@+id/name_TextView" />
+
+    </RelativeLayout>
+
+</TableRow >

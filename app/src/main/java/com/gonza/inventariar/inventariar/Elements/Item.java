@@ -17,6 +17,10 @@ public class Item extends SugarRecord<Item> {
     public Item(){
     }
 
+    public Item(Localization localization) {
+        this.localization = localization;
+    }
+
     public Item(String inventoryCode,Localization localization, String name, String category) {
         this.inventoryCode = inventoryCode;
         this.name = name;
