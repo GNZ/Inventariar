@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">InventariarApp</string>
 
-    <string name="iniciarRetomar_string">Iniciar/Retomar</string>
+    <string name="iniciarRetomar_string">Cargar datos</string>
     <string name="compartir_string">Compartir reporte</string>
 
     <string name="title_activity_wait_scann">WaitScannActivity</string>
+
+    <!-- General -->
+    <string name="folder">Inventariar</string>
 
     <!-- main-->
     <string name="add_button">Agregar item</string>
@@ -19,6 +22,18 @@
         <item>Código</item>
     </array>
 
+    <!-- string array for CSV file -->
+    <array name="columnCSV">
+        <item>Codigo inventario</item>
+        <item>Nombre</item>
+        <item>Numero de serie</item>
+        <item>Marca</item>
+        <item>Categoria</item>
+        <item>Numero de fotos</item>
+        <item>Descripcion</item>
+        <item>Valor</item>
+    </array>
+
     <!-- WaitScannActivity -->
     <string name="waitLocation">Escaneé el código de localización</string>
     <string name="waitItem">Escaneé el código del artículo</string>
@@ -26,13 +41,13 @@
 
 
     <!-- ItemFormFragment -->
-    <string name="inventory_hint">Código de inventario</string>
-    <string name="name_hint">Nombre</string>
+    <string name="inventory_hint">Código de inventario (obligatorio)</string>
+    <string name="name_hint">Nombre (obligatorio)</string>
     <string name="number_hint">Número de serie</string>
     <string name="description_hint">Descripción</string>
     <string name="value_hint">Valor del bien</string>
     <string name="msg_noInventoryCode">Complete el número de inventario del item</string>
-    <string name="msg_noObligatoryFields">Complete el número de inventario del item</string>
+    <string name="msg_noObligatoryFields">Complete los campos obligatorios</string>
     <array name="brands">
         <item>Marca 1</item>
         <item>Marca 2</item>

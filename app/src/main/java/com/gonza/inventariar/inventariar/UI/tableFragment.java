@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,10 @@ import butterknife.OnClick;
 import com.gonza.inventariar.inventariar.Elements.Item;
 import com.gonza.inventariar.inventariar.Elements.Value;
 import com.gonza.inventariar.inventariar.R;
+import com.opencsv.CSVWriter;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +50,7 @@ public class tableFragment extends Fragment {
     private ArrayList<Value> values;
     private int elements;
     private List<Item> items;
+    private String localization;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -142,6 +148,8 @@ public class tableFragment extends Fragment {
         this.items = items;
     }
 
+    public void setLocalization(String localization){ this.localization = localization; }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -155,5 +163,33 @@ public class tableFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void exportToCSV(){
+        String folderPath = Environment.getExternalStorageDirectory()+File.separator+getResources().getString(R.string.folder)+File.separator
+                + localization;
+        File exportDir = new File(folderPath);
+        if (!exportDir.exists())
+        {
+            exportDir.mkdirs();
+        }
+        File file = new File(exportDir, localization+".csv");
+        try{
+            file.createNewFile();
+            CSVWriter csvWriter = new CSVWriter(new FileWriter(file),';');
+            String[] columnsCSV = getResources().getStringArray(R.array.columnCSV);
+            csvWriter.writeNext(columnsCSV);
+
+            for (Item e: items){
+                String[] newRow = {e.getInventoryCode(),e.getName(),e.getBarCode(),
+                        e.getBrand(),e.getCategory(),e.getPictures()+"",e.getDescription(),e.getValue()};
+                csvWriter.writeNext(newRow);
+            }
+
+            csvWriter.close();
+
+        }catch (Exception e){
+            Log.e("MainActivity", e.getMessage(), e);
+        }
     }
 }

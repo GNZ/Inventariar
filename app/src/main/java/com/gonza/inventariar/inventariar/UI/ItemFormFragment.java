@@ -44,8 +44,7 @@ public class ItemFormFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "ItemFromFragment";
     private static final int RESULT_LOAD_IMAGE = 1;
-    private static final String FOLDER_NAME = "Inventariar";
-    private static final int IMAGE_SCALED = 80;
+    private static final int IMAGE_SCALED = 95;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -67,7 +66,9 @@ public class ItemFormFragment extends Fragment {
     private View.OnClickListener addPicListener;
     private int picViewImagePress;
     private int picNumber = 0;
+    private String folder;
     private String folderPath;
+    private String localization;
     private String tempFolderPath;
     private ImageView[] picArray;
 
@@ -102,6 +103,7 @@ public class ItemFormFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        folder = getResources().getString(R.string.folder);
     }
 
     @Override
@@ -131,7 +133,7 @@ public class ItemFormFragment extends Fragment {
         }
 
         //Folder name
-        folderPath = Environment.getExternalStorageDirectory()+File.separator +FOLDER_NAME + File.separator;
+        folderPath = Environment.getExternalStorageDirectory()+File.separator +folder + File.separator +localization+ File.separator;
         tempFolderPath = folderPath+"temp.jpg";
 
         //Check if your application folder exists in the external storage, if not create it:
@@ -192,6 +194,10 @@ public class ItemFormFragment extends Fragment {
         this.barcode = barcode;
     }
 
+    public void setLocalization(String loc){
+        localization = loc;
+    }
+
     public boolean checkAndGetItem(Item item){
         String inventoryCode = inventoryEditText.getText().toString();
         String name = nameEditText.getText().toString();
@@ -221,8 +227,8 @@ public class ItemFormFragment extends Fragment {
             if (data != null) {
                 String filename = inventoryEditText.getText().toString()+picViewImagePress+".jpg";
                 File sdCard = Environment.getExternalStorageDirectory();
-                String imageStorageFolderPath = File.separator + FOLDER_NAME + File.separator;
-                File destinationFile = new File(sdCard, imageStorageFolderPath + filename);
+                String imageStorageFolderPath = File.separator + folder + File.separator;
+                File destinationFile = new File(folderPath + filename);
                 Log.d(TAG, "the destination for image file is: " + destinationFile);
                 if (data.getExtras() != null) {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");

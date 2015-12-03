@@ -39,6 +39,7 @@ public class main extends Activity {
         table = new tableFragment();
         // Get location's barcode
         location_code = getIntent().getStringExtra("Location");
+        // Send the location code to the fragment
 
         List<Localization> searchLocation = Localization.findWithQuery(Localization.class,
                 "Select * from localization where inventory_code = ?", location_code);
@@ -57,13 +58,13 @@ public class main extends Activity {
 
     private void refreshTable(Localization loc){
         List<Item> items = Item.find(Item.class, "localization = ?",loc.getId()+"");
-        tableFragment table2 = new tableFragment();
-        table2.setItemList(items);
+        table = new tableFragment();
+        table.setItemList(items);
         for (Item e: items){
             Log.d(TAG,e.getName());
         }
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container,table2);
+        ft.replace(R.id.fragment_container,table);
         ft.commit();
     }
 
@@ -72,6 +73,12 @@ public class main extends Activity {
         waitScannActivity.putExtra("scannType",SCANN_ITEM);
         waitScannActivity.putExtra("Localization",location_code);
         startActivity(waitScannActivity);
+    }
+
+    @OnClick(R.id.finish_button) void finishButton(){
+        table.setLocalization(location_code);
+        table.exportToCSV();
+        Toast.makeText(this,"Exportado a CSV",Toast.LENGTH_LONG).show();
     }
 
     @Override

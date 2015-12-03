@@ -3,6 +3,7 @@ package com.gonza.inventariar.inventariar.UI;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -38,6 +39,9 @@ public class ItemFormActivity extends Activity {
         String loc = getIntent().getStringExtra("Localization");
         // Create ItemFormFragment and pass item's barcode if the user pass it
         itemFormFragment = new ItemFormFragment();
+        itemFormFragment.setLocalization(loc);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         if (!itemBarcode.equals("N/A")){
             itemFormFragment.setItemBarcode(itemBarcode);
