@@ -65,21 +65,30 @@
         android:id="@+id/button_container">
 
         <Button
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/add_button"
             android:layout_width="0.0dip"
             android:layout_weight="1.0"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/add_button" />
 
         <Button
             android:text="@string/finish_button"
             android:layout_width="0.0dip"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:id="@+id/finish_button"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.0"/>
+
+        <Button
+            android:text="@string/compartir_string"
+            android:layout_width="0.0dip"
+            android:layout_height="match_parent"
+            android:id="@+id/to_share_button"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1.0"/>
     </LinearLayout>
 

@@ -64,4 +64,7 @@
         <item>Categoria 5</item>
     </array>
 
+    <!-- SharedActivity -->
+    <string name="shared_success">Archivo enviado con éxito</string>
+
 </resources>

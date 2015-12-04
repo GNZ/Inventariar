@@ -76,9 +76,16 @@ public class main extends Activity {
     }
 
     @OnClick(R.id.finish_button) void finishButton(){
+
+    }
+
+    @OnClick(R.id.to_share_button) void shareButtonAction() {
         table.setLocalization(location_code);
         table.exportToCSV();
-        Toast.makeText(this,"Exportado a CSV",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Exportado a CSV",Toast.LENGTH_LONG).show();
+        Intent sharedActivity = new Intent(main.this,SharedActivity.class);
+        sharedActivity.putExtra("Localization",location_code);
+        startActivity(sharedActivity);
     }
 
     @Override
