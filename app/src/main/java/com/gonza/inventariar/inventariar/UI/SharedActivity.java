@@ -55,6 +55,10 @@ public class SharedActivity extends Activity {
         startActivity(shareIntent);
     }
 
+    @OnClick(R.id.exit_button) void finishAction() {
+        finish();
+    }
+
     private static void zipFolder(String inputFolderPath, String outZipPath) {
         try {
             FileOutputStream fos = new FileOutputStream(outZipPath);

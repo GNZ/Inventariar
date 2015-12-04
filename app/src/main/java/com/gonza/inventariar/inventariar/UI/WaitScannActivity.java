@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,6 +53,7 @@ public class WaitScannActivity extends Activity {
     @Bind(R.id.show_textView) TextView showTextView;
     @Bind(R.id.omit_button) Button omitButton;
     private int scannType;
+    private Activity waitScannActivity = this;
     private static final int SCANN_LOCATION = 0;
     private static final int SCANN_ITEM = 1;
     private final int scapeChar = KeyEvent.KEYCODE_ENTER;
@@ -256,11 +258,14 @@ public class WaitScannActivity extends Activity {
                     (event.getAction() == KeyEvent.ACTION_DOWN) && event.getKeyCode() == scapeChar ){
                 String code = v.getText().toString();
                 if (scannType == SCANN_LOCATION) {
-                    Intent mainActivity = new Intent(WaitScannActivity.this, main.class);
-                    mainActivity.putExtra("Location", code);
-                    startActivity(mainActivity);
-                    finish();
-                    return true;
+                    if(!code.equals("")) {
+                        Intent mainActivity = new Intent(WaitScannActivity.this, main.class);
+                        mainActivity.putExtra("Location", code);
+                        startActivity(mainActivity);
+                        finish();
+                        return true;
+                    } else
+                        Toast.makeText(waitScannActivity,getResources().getString(R.string.no_location),Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Intent itemFormActivity = new Intent(WaitScannActivity.this, ItemFormActivity.class);

@@ -38,6 +38,7 @@
     <string name="waitLocation">Escaneé el código de localización</string>
     <string name="waitItem">Escaneé el código del artículo</string>
     <string name="omit_button">Omitir</string>
+    <string name="no_location">Tiene que poner el codigo de la locación</string>
 
 
     <!-- ItemFormFragment -->
