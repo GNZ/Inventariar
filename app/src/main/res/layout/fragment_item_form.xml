@@ -15,7 +15,7 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:layout_width="224dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/inventory_editText"
                 android:layout_marginLeft="20dp"
@@ -24,7 +24,7 @@
                 android:layout_gravity="left" />
 
             <EditText
-                android:layout_width="224dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/name_editText"
                 android:layout_marginLeft="20dp"
@@ -33,7 +33,7 @@
                 android:layout_gravity="left" />
 
             <EditText
-                android:layout_width="224dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/barcode_editText"
                 android:layout_marginLeft="20dp"
@@ -59,30 +59,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:layout_marginTop="10dp"
+                android:padding="10dp"
                 android:orientation="horizontal"
+                android:background="@drawable/all_borders"
                 android:weightSum="1">
 
 
                 <ImageView
-                    android:layout_width="15dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:id="@+id/pic1_imageView"
                     android:src="@drawable/add_image"
                     android:layout_weight="0.25" />
                 <ImageView
-                    android:layout_width="15dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:id="@+id/pic2_imageView"
                     android:layout_weight="0.25" />
 
                 <ImageView
-                    android:layout_width="15dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:id="@+id/pic3_imageView"
                     android:layout_weight="0.25" />
 
                 <ImageView
-                    android:layout_width="15dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:id="@+id/pic4_imageView"
                     android:layout_weight="0.25" />
@@ -90,7 +92,7 @@
             </LinearLayout>
 
             <EditText
-                android:layout_width="224dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/description_editText"
                 android:layout_marginLeft="20dp"
@@ -99,7 +101,7 @@
                 android:layout_gravity="left" />
 
             <EditText
-                android:layout_width="224dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/value_editText"
                 android:inputType="number"

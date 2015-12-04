@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Button;
@@ -19,7 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class InitialActivity extends Activity {
+public class InitialActivity extends AppCompatActivity {
 
 
     /**
@@ -39,10 +40,7 @@ public class InitialActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_initial);
-
         ButterKnife.bind(this);
 
     }
