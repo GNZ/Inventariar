@@ -21,9 +21,12 @@ import android.widget.Toast;
 
 import com.gonza.inventariar.inventariar.Elements.Item;
 import com.gonza.inventariar.inventariar.R;
+import com.gonza.inventariar.inventariar.core.ScalingUtilities;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import butterknife.Bind;
@@ -44,7 +47,9 @@ public class ItemFormFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "ItemFromFragment";
     private static final int RESULT_LOAD_IMAGE = 1;
-    private static final int IMAGE_SCALED = 95;
+    private static final int IMAGE_SCALED = 80;
+    private static final int IMAGE_WIDTH = 320;
+    private static final int IMAGE_HEIGHT = 640;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -69,7 +74,7 @@ public class ItemFormFragment extends Fragment {
     private String folder;
     private String folderPath;
     private String localization;
-    private String tempFolderPath;
+    private String temNewImage;
     private ImageView[] picArray;
 
     private OnFragmentInteractionListener mListener;
@@ -134,7 +139,7 @@ public class ItemFormFragment extends Fragment {
 
         //Folder name
         folderPath = Environment.getExternalStorageDirectory()+File.separator +folder + File.separator +localization+ File.separator;
-        tempFolderPath = folderPath+"temp.jpg";
+        temNewImage = Environment.getExternalStorageDirectory()+File.separator +folder + File.separator+"temp.jpg";
 
         //Check if your application folder exists in the external storage, if not create it:
         File imageStorageFolder = new File(folderPath);
@@ -221,34 +226,38 @@ public class ItemFormFragment extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == RESULT_LOAD_IMAGE) {
-
-
-            //Check if data in not null and extract the Bitmap:
-            if (data != null) {
-                String filename = inventoryEditText.getText().toString()+picViewImagePress+".jpg";
-                File sdCard = Environment.getExternalStorageDirectory();
-                String imageStorageFolderPath = File.separator + folder + File.separator;
-                File destinationFile = new File(folderPath + filename);
-                Log.d(TAG, "the destination for image file is: " + destinationFile);
-                if (data.getExtras() != null) {
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    try {
-                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        bitmap = Bitmap.createScaledBitmap(bitmap, 320, 640, false);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_SCALED, bytes);
-                        FileOutputStream out = new FileOutputStream(destinationFile);
-                        out.write(bytes.toByteArray());
-                        out.close();
-                        refreshImageViews(destinationFile.getAbsolutePath());
-                        //TODO remove took picture
-                    } catch (Exception e) {
-                        Log.e(TAG, "ERROR:" + e.toString());
-                    }
-                }
+            FileInputStream in;
+            BufferedInputStream buf;
+            try {
+                File imageFile = imageFile();
+                if (imageFile.exists()) imageFile.delete();
+                in = new FileInputStream(temNewImage);
+                buf = new BufferedInputStream(in);
+                Bitmap preImage = BitmapFactory.decodeStream(buf);
+                Bitmap image = ScalingUtilities.createScaledBitmap(preImage,IMAGE_WIDTH,
+                        IMAGE_HEIGHT, ScalingUtilities.ScalingLogic.FIT);
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.JPEG,IMAGE_SCALED,bytes);
+                imageFile.createNewFile();
+                FileOutputStream fo = new FileOutputStream(imageFile);
+                fo.write(bytes.toByteArray());
+                fo.close();
+                refreshImageViews(imageFile.getAbsolutePath());
+                //TODO remove took picture
+            } catch (Exception e) {
+                Log.e(TAG, "ERROR:" + e.toString());
             }
 
         }
 
+    }
+
+    private File imageFile(){
+        String filename = inventoryEditText.getText().toString()+picViewImagePress+".jpg";
+        File sdCard = Environment.getExternalStorageDirectory();
+        String imageStorageFolderPath = File.separator + folder + File.separator;
+        File destinationFile = new File(folderPath + filename);
+        return destinationFile;
     }
 
     private void setPic(String pathToImage) {
@@ -276,8 +285,9 @@ public class ItemFormFragment extends Fragment {
     }
 
 
-    private void refreshImageViews(String imagePath ){
-       setPic(imagePath);
+    private void refreshImageViews(String image ){
+        //picArray[picViewImagePress].setImageBitmap(image);
+        setPic(image);
         picNumber = picViewImagePress+1;
         if (picViewImagePress < 3){
             picArray[picViewImagePress+1].setImageResource(R.drawable.add_image);
@@ -319,6 +329,8 @@ public class ItemFormFragment extends Fragment {
 
     private void openCamera() {
         Intent photoPickerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File destinationFile = new File(temNewImage);
+        photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(destinationFile));
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
     }
 
