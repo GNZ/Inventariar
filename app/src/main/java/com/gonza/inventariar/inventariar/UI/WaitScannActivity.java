@@ -265,7 +265,7 @@ public class WaitScannActivity extends Activity {
                         finish();
                         return true;
                     } else
-                        Toast.makeText(waitScannActivity,getResources().getString(R.string.no_location),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(waitScannActivity,getResources().getString(R.string.no_location),Toast.LENGTH_LONG).show();
                 }
                 else {
                     Intent itemFormActivity = new Intent(WaitScannActivity.this, ItemFormActivity.class);

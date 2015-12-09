@@ -2,6 +2,8 @@ package com.gonza.inventariar.inventariar.UI;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,11 @@ import android.widget.TableRow.LayoutParams;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.view.CardListView;
 
 import com.gonza.inventariar.inventariar.Elements.Item;
 import com.gonza.inventariar.inventariar.Elements.Value;
@@ -42,15 +49,17 @@ public class tableFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "tableFragment";
     //table
-    @Bind(R.id.table) TableLayout table;
+   // @Bind(R.id.table) TableLayout table;
     private int col = 2;
-
+    String folderPath;
     private String[] vals;
     private ArrayList<Value> values;
     private int elements;
     private List<Item> items;
     private String localization;
+    private String element;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -94,27 +103,40 @@ public class tableFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_table, container, false);
         ButterKnife.bind(this,rootView);
-        // TODO get the number of elements
-        elements = 4;
+        folderPath = Environment.getExternalStorageDirectory()+
+                File.separator+getResources().getString(R.string.folder)+File.separator
+                + localization;
         //create table
         vals = getResources().getStringArray(R.array.columnValues);
         values = new ArrayList<Value>();
-
+        ArrayList<Card> cards = new ArrayList<Card>();
         if (items != null || !items.isEmpty()) {
             for (Item e: items) {
-                TableRow tr = (TableRow) inflater.inflate(R.layout.row_table,null,false);
+                //cards
 
-                //Create a TextView for the inventory code
-                ((TextView)tr.findViewById(R.id.inventory_TextView)).setText(e.getInventoryCode());
+                Card card = new Card(rootView.getContext());
 
-                // Create a TextView for the name
-                ((TextView)tr.findViewById(R.id.name_TextView)).setText(e.getName());
+                // Create a CardHeader
+                CardHeader header = new CardHeader(rootView.getContext());
+                // Add Header to card
+                header.setTitle(e.getInventoryCode());
+                card.setTitle(e.getName());
+                card.addCardHeader(header);
 
-                //add row to the table
-                table.addView(tr, new LayoutParams(
-                        LayoutParams.MATCH_PARENT,
-                        LayoutParams.WRAP_CONTENT));
+                CardThumbnail thumb = new CardThumbnail(rootView.getContext());
+                // TODO put the correct image
+                thumb.setDrawableResource(R.drawable.no_image);
+                card.addCardThumbnail(thumb);
 
+                cards.add(card);
+                Log.d(TAG,e.getInventoryCode());
+
+            }
+            CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(), cards);
+
+            CardListView listView = (CardListView) rootView.findViewById(R.id.myList);
+            if (listView != null) {
+                listView.setAdapter(mCardArrayAdapter);
             }
         }
         return rootView;
@@ -166,8 +188,6 @@ public class tableFragment extends Fragment {
     }
 
     public void exportToCSV(){
-        String folderPath = Environment.getExternalStorageDirectory()+File.separator+getResources().getString(R.string.folder)+File.separator
-                + localization;
         File exportDir = new File(folderPath);
         if (!exportDir.exists())
         {

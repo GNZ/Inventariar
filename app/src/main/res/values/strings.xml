@@ -4,10 +4,12 @@
     <string name="iniciarRetomar_string">Cargar datos</string>
     <string name="compartir_string">Compartir reporte</string>
 
-    <string name="title_activity_wait_scann">WaitScannActivity</string>
-
     <!-- General -->
     <string name="folder">Inventariar</string>
+    <string name="initial_activity_label">Carga de datos</string>
+    <string name="wait_activity_label">Ingreso codigo de barras</string>
+    <string name="main_activity_label">Locacion</string>
+    <string name="item_form_activity_label">Item</string>
 
     <!-- main-->
     <string name="add_button">Agregar item</string>
@@ -64,8 +66,5 @@
         <item>Categoria 4</item>
         <item>Categoria 5</item>
     </array>
-
-    <!-- SharedActivity -->
-    <string name="shared_success">Archivo enviado con éxito</string>
 
 </resources>

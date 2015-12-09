@@ -1,10 +1,18 @@
 package com.gonza.inventariar.inventariar.UI;
 
-import android.app.Activity;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.view.MenuItemCompat;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,12 +25,20 @@ import com.gonza.inventariar.inventariar.Elements.Item;
 import com.gonza.inventariar.inventariar.Elements.Localization;
 import com.gonza.inventariar.inventariar.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
-public class main extends Activity {
+public class main extends AppCompatActivity {
+
     private static final String TAG = "main";
+
+    String folder;
     @Bind(R.id.location_TextView) TextView location_textView;
-    @Bind(R.id.finish_button) Button finishButton;
     private tableFragment table;
     private String location_code;
     private Localization currentLocalization;
@@ -35,6 +51,8 @@ public class main extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        // Action bar
+        ActionBar ab = getSupportActionBar();
         // Create tableFragment
         table = new tableFragment();
         // Get location's barcode
@@ -53,44 +71,94 @@ public class main extends Activity {
             refreshTable(currentLocalization);
         }
 
+        folder = getResources().getString(R.string.folder);
+
         location_textView.setText("Locación: "+location_code);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_initial_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+           case R.id.menu_item_share:
+                setShareIntent();
+                return true;
+           default: return true;
+        }
     }
 
     private void refreshTable(Localization loc){
         List<Item> items = Item.find(Item.class, "localization = ?",loc.getId()+"");
         table = new tableFragment();
         table.setItemList(items);
-        for (Item e: items){
-            Log.d(TAG,e.getName());
-        }
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container,table);
         ft.commit();
     }
 
     @OnClick(R.id.add_button) void scannItem(){
-        Intent waitScannActivity = new Intent(main.this,WaitScannActivity.class);
-        waitScannActivity.putExtra("scannType",SCANN_ITEM);
-        waitScannActivity.putExtra("Localization",location_code);
-        startActivity(waitScannActivity);
+        Intent itemFormActivity = new Intent(main.this, ItemFormActivity.class);
+        itemFormActivity.putExtra("Item", "N/A");
+        itemFormActivity.putExtra("Localization",location_code);
+        startActivity(itemFormActivity);
     }
 
     @OnClick(R.id.finish_button) void finishButton(){
-
-    }
-
-    @OnClick(R.id.to_share_button) void shareButtonAction() {
-        table.setLocalization(location_code);
-        table.exportToCSV();
-        //Toast.makeText(this,"Exportado a CSV",Toast.LENGTH_LONG).show();
-        Intent sharedActivity = new Intent(main.this,SharedActivity.class);
-        sharedActivity.putExtra("Localization",location_code);
-        startActivity(sharedActivity);
+        finish();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         refreshTable(currentLocalization);
+    }
+
+    // Call to update the share intent
+    private void setShareIntent() {
+        table.setLocalization(location_code);
+        // Create CSV
+        table.exportToCSV();
+        // Create the zip file
+        String folderPath = Environment.getExternalStorageDirectory()+ File.separator +folder+File.separator+location_code;
+        String zipFile = folderPath+".zip";
+        Log.d(TAG,"share button press");
+        zipFolder(folderPath,zipFile);
+        Toast.makeText(this,"Zip file ready in pat "+folderPath,Toast.LENGTH_LONG).show();
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(zipFile)));
+
+        startActivity(shareIntent);
+    }
+
+    private static void zipFolder(String inputFolderPath, String outZipPath) {
+        try {
+            FileOutputStream fos = new FileOutputStream(outZipPath);
+            ZipOutputStream zos = new ZipOutputStream(fos);
+            File srcFile = new File(inputFolderPath);
+            File[] files = srcFile.listFiles();
+            Log.d("", "Zip directory: " + srcFile.getName());
+            for (int i = 0; i < files.length; i++) {
+                Log.d("", "Adding file: " + files[i].getName());
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = new FileInputStream(files[i]);
+                zos.putNextEntry(new ZipEntry(files[i].getName()));
+                int length;
+                while ((length = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, length);
+                }
+                zos.closeEntry();
+                fis.close();
+            }
+            zos.close();
+        } catch (IOException ioe) {
+            Log.d(TAG, ioe.getMessage());
+        }
     }
 }

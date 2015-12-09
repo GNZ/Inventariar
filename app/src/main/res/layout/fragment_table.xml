@@ -2,9 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
     tools:context="com.gonza.inventariar.inventariar.UI.tableFragment">
 
-
+    <!--
     <LinearLayout
         android:orientation="vertical"
         android:layout_alignParentTop="true"
@@ -28,19 +29,23 @@
                 android:text="@string/name_column"/>
 
     </LinearLayout>
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/linearLayout">
+    -->
+
+
+        <it.gmariotti.cardslib.library.view.CardListView
+            android:id="@+id/myList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
+            style="@style/list_card.thumbnail"/>
+
+        <!--
         <TableLayout
             android:id="@+id/table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TableLayout>
-    </ScrollView>
+        -->
 
 
 </RelativeLayout>

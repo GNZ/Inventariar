@@ -1,8 +1,10 @@
 package com.gonza.inventariar.inventariar.UI;
 
-import android.app.Activity;
+
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,7 +21,7 @@ import com.gonza.inventariar.inventariar.R;
 import java.util.List;
 
 
-public class ItemFormActivity extends Activity {
+public class ItemFormActivity extends AppCompatActivity {
 
     @Bind(R.id.add_button) Button addButton;
     @Bind(R.id.fragment_container) FrameLayout fragmentContainer;
@@ -32,6 +34,9 @@ public class ItemFormActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_form);
         ButterKnife.bind(this);
+
+        //Action bar
+        ActionBar ab = getSupportActionBar();
 
         //Get item's barcode
         itemBarcode = getIntent().getStringExtra("Item");
