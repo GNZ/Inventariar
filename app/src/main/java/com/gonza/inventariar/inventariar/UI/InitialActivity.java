@@ -47,7 +47,7 @@ public class InitialActivity extends AppCompatActivity {
 
     @OnClick(R.id.iniciarRetomar_button) void iniciarRetomar(){
         Intent waitScannActivity = new Intent(InitialActivity.this, WaitScannActivity.class);
-        waitScannActivity.putExtra("scannType", SCAN_LOCATION);
+        waitScannActivity.putExtra("scanType", SCAN_LOCATION);
         startActivity(waitScannActivity);
     }
 }

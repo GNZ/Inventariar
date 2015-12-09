@@ -2,9 +2,6 @@ package com.gonza.inventariar.inventariar.UI;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,14 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.TableRow.LayoutParams;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -53,12 +44,11 @@ public class tableFragment extends Fragment {
     //table
    // @Bind(R.id.table) TableLayout table;
     private int col = 2;
-    String folderPath;
     private String[] vals;
     private ArrayList<Value> values;
     private int elements;
     private List<Item> items;
-    private String localization;
+    private String location;
     private String element;
 
     // TODO: Rename and change types of parameters
@@ -103,9 +93,6 @@ public class tableFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_table, container, false);
         ButterKnife.bind(this,rootView);
-        folderPath = Environment.getExternalStorageDirectory()+
-                File.separator+getResources().getString(R.string.folder)+File.separator
-                + localization;
         //create table
         vals = getResources().getStringArray(R.array.columnValues);
         values = new ArrayList<Value>();
@@ -170,7 +157,7 @@ public class tableFragment extends Fragment {
         this.items = items;
     }
 
-    public void setLocalization(String localization){ this.localization = localization; }
+    public void setLocation(String location){ this.location = location; }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -188,12 +175,16 @@ public class tableFragment extends Fragment {
     }
 
     public void exportToCSV(){
+
+       String folderPath = Environment.getExternalStorageDirectory()+
+                File.separator+getResources().getString(R.string.folder)+File.separator
+                + location;
         File exportDir = new File(folderPath);
         if (!exportDir.exists())
         {
             exportDir.mkdirs();
         }
-        File file = new File(exportDir, localization+".csv");
+        File file = new File(exportDir, location +".csv");
         try{
             file.createNewFile();
             CSVWriter csvWriter = new CSVWriter(new FileWriter(file),';');

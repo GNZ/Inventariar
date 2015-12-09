@@ -52,12 +52,12 @@ public class WaitScannActivity extends Activity {
     @Bind(R.id.barcode_text) EditText barcode;
     @Bind(R.id.show_textView) TextView showTextView;
     @Bind(R.id.omit_button) Button omitButton;
-    private int scannType;
+    private int scanType;
     private Activity waitScannActivity = this;
     private static final int SCANN_LOCATION = 0;
     private static final int SCANN_ITEM = 1;
     private final int scapeChar = KeyEvent.KEYCODE_ENTER;
-    private String localization;
+    private String location;
     //
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -119,7 +119,7 @@ public class WaitScannActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent waitScannActivity = getIntent();
-        scannType = waitScannActivity.getIntExtra("scannType",0);
+        scanType = waitScannActivity.getIntExtra("scanType",0);
         setContentView(R.layout.activity_wait_scann);
         ButterKnife.bind(this);
 
@@ -138,12 +138,12 @@ public class WaitScannActivity extends Activity {
 
         //Fill the with text of the showtextview
         String content;
-        if (scannType == SCANN_LOCATION) {
+        if (scanType == SCANN_LOCATION) {
             content = getResources().getString(R.string.waitLocation);
             omitButton.setVisibility(View.GONE);
         }
         else {
-            localization = waitScannActivity.getStringExtra("Localization");
+            location = waitScannActivity.getStringExtra("Localization");
             content = getResources().getString(R.string.waitItem);
         }
         showTextView.setText(content);
@@ -257,7 +257,7 @@ public class WaitScannActivity extends Activity {
             if ( (actionId == EditorInfo.IME_ACTION_DONE) ||
                     (event.getAction() == KeyEvent.ACTION_DOWN) && event.getKeyCode() == scapeChar ){
                 String code = v.getText().toString();
-                if (scannType == SCANN_LOCATION) {
+                if (scanType == SCANN_LOCATION) {
                     if(!code.equals("")) {
                         Intent mainActivity = new Intent(WaitScannActivity.this, main.class);
                         mainActivity.putExtra("Location", code);
@@ -270,7 +270,7 @@ public class WaitScannActivity extends Activity {
                 else {
                     Intent itemFormActivity = new Intent(WaitScannActivity.this, ItemFormActivity.class);
                     itemFormActivity.putExtra("Item", code);
-                    itemFormActivity.putExtra("Localization",localization);
+                    itemFormActivity.putExtra("Localization", location);
                     startActivity(itemFormActivity);
                     finish();
                     return true;
@@ -283,7 +283,7 @@ public class WaitScannActivity extends Activity {
     @OnClick(R.id.omit_button) void omitButtonAction () {
         Intent itemFormActivity = new Intent(WaitScannActivity.this, ItemFormActivity.class);
         itemFormActivity.putExtra("Item", "N/A");
-        itemFormActivity.putExtra("Localization",localization);
+        itemFormActivity.putExtra("Localization", location);
         startActivity(itemFormActivity);
         finish();
     }

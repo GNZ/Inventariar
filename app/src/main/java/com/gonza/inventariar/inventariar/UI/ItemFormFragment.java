@@ -16,12 +16,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.gonza.inventariar.inventariar.Elements.Item;
 import com.gonza.inventariar.inventariar.R;
 import com.gonza.inventariar.inventariar.core.ScalingUtilities;
+import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -58,8 +58,8 @@ public class ItemFormFragment extends Fragment {
     @Bind(R.id.inventory_editText) EditText inventoryEditText;
     @Bind(R.id.name_editText) EditText nameEditText;
     @Bind(R.id.barcode_editText) EditText barcodeEditText;
-    @Bind(R.id.brand_spinner) Spinner brandSpinner;
-    @Bind(R.id.category_spinner) Spinner categorySpinner;
+    @Bind(R.id.brand_spinner)  BetterSpinner brandSpinner;
+    @Bind(R.id.category_spinner) BetterSpinner categorySpinner;
     @Bind(R.id.pic1_imageView) ImageView pic1;
     @Bind(R.id.pic2_imageView) ImageView pic2;
     @Bind(R.id.pic3_imageView) ImageView pic3;
@@ -73,7 +73,7 @@ public class ItemFormFragment extends Fragment {
     private int picNumber = 0;
     private String folder;
     private String folderPath;
-    private String localization;
+    private String location;
     private String temNewImage;
     private ImageView[] picArray;
 
@@ -125,11 +125,11 @@ public class ItemFormFragment extends Fragment {
         }
 
         ArrayAdapter<CharSequence> spinnerCategoryArrayAdapter = ArrayAdapter.createFromResource(
-                getActivity(), R.array.categorys, android.R.layout.simple_spinner_item);
+                getActivity(), R.array.categorys, android.R.layout.simple_dropdown_item_1line);
         categorySpinner.setAdapter(spinnerCategoryArrayAdapter);
 
         ArrayAdapter<CharSequence> spinnerBrandArrayAdapter = ArrayAdapter.createFromResource(
-                getActivity(), R.array.brands, android.R.layout.simple_spinner_item);
+                getActivity(), R.array.brands, android.R.layout.simple_dropdown_item_1line);
         brandSpinner.setAdapter(spinnerBrandArrayAdapter);
 
         if (thereIsBarcode){
@@ -138,7 +138,7 @@ public class ItemFormFragment extends Fragment {
         }
 
         //Folder name
-        folderPath = Environment.getExternalStorageDirectory()+File.separator +folder + File.separator +localization+ File.separator;
+        folderPath = Environment.getExternalStorageDirectory()+File.separator +folder + File.separator + location + File.separator;
         temNewImage = Environment.getExternalStorageDirectory()+File.separator +folder + File.separator+"temp.jpg";
 
         //Check if your application folder exists in the external storage, if not create it:
@@ -199,8 +199,8 @@ public class ItemFormFragment extends Fragment {
         this.barcode = barcode;
     }
 
-    public void setLocalization(String loc){
-        localization = loc;
+    public void setLocation(String loc){
+        location = loc;
     }
 
     public boolean checkAndGetItem(Item item){
@@ -215,8 +215,8 @@ public class ItemFormFragment extends Fragment {
         }
         item.setInventoryCode(inventoryCode);
         item.setName(name);
-        item.setBrand(brandSpinner.getSelectedItem().toString());
-        item.setCategory(categorySpinner.getSelectedItem().toString());
+        item.setBrand(brandSpinner.getText().toString());
+        item.setCategory(categorySpinner.getText().toString());
         item.setPictures(picNumber);
         if (!barcodeEditText.getText().toString().equals("")) item.setBarCode(barcodeEditText.getText().toString());
         if (!descriptionEditText.getText().toString().equals("")) item.setDescription(descriptionEditText.getText().toString());

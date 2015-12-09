@@ -2,18 +2,15 @@ package com.gonza.inventariar.inventariar.UI;
 
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.view.MenuItemCompat;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,7 +118,7 @@ public class main extends AppCompatActivity {
 
     // Call to update the share intent
     private void setShareIntent() {
-        table.setLocalization(location_code);
+        table.setLocation(location_code);
         // Create CSV
         table.exportToCSV();
         // Create the zip file

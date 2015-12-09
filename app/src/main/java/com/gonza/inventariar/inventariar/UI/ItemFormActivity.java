@@ -27,7 +27,7 @@ public class ItemFormActivity extends AppCompatActivity {
     @Bind(R.id.fragment_container) FrameLayout fragmentContainer;
     private ItemFormFragment itemFormFragment;
     private String itemBarcode;
-    private Localization localization;
+    private Localization location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class ItemFormActivity extends AppCompatActivity {
         String loc = getIntent().getStringExtra("Localization");
         // Create ItemFormFragment and pass item's barcode if the user pass it
         itemFormFragment = new ItemFormFragment();
-        itemFormFragment.setLocalization(loc);
+        itemFormFragment.setLocation(loc);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -55,7 +55,7 @@ public class ItemFormActivity extends AppCompatActivity {
         //Search in the db for the localization
         List<Localization> searchLocation = Localization.findWithQuery(Localization.class,
                 "Select * from localization where inventory_code = ?", loc);
-        localization = searchLocation.get(0);
+        location = searchLocation.get(0);
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
@@ -66,7 +66,7 @@ public class ItemFormActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.add_button) void addItem() {
-        Item newItem = new Item(localization);
+        Item newItem = new Item(location);
         if (itemFormFragment.checkAndGetItem(newItem)) {
             //TODO check if not exist and save it
             newItem.save();
