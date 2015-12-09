@@ -44,7 +44,7 @@
             <com.weiwangcn.betterspinner.library.BetterSpinner
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:hint="Marca"
+                android:hint="@string/brand_hint"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:id="@+id/brand_spinner"
@@ -54,7 +54,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:hint="Categoria"
+                android:hint="@string/category_hint"
                 android:layout_marginTop="10dp"
                 android:id="@+id/category_spinner" />
 

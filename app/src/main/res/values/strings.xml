@@ -47,6 +47,8 @@
     <string name="inventory_hint">Código de inventario (obligatorio)</string>
     <string name="name_hint">Nombre (obligatorio)</string>
     <string name="number_hint">Número de serie</string>
+    <string name="brand_hint">Marca (obligatorio)</string>
+    <string name="category_hint">Categoria (obligatorio)</string>
     <string name="description_hint">Descripción</string>
     <string name="value_hint">Valor del bien</string>
     <string name="msg_noInventoryCode">Complete el número de inventario del item</string>

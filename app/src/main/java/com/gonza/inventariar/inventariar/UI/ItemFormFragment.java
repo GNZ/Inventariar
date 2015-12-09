@@ -206,8 +206,10 @@ public class ItemFormFragment extends Fragment {
     public boolean checkAndGetItem(Item item){
         String inventoryCode = inventoryEditText.getText().toString();
         String name = nameEditText.getText().toString();
+        String brand = brandSpinner.getText().toString();
+        String category = categorySpinner.getText().toString();
         boolean check = !inventoryCode.equals("") &&
-                !name.equals("");
+                !name.equals("") && !brand.equals("") && !category.equals("");
         if (!check){
             String msg = getResources().getString(R.string.msg_noObligatoryFields);
             Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
@@ -215,8 +217,8 @@ public class ItemFormFragment extends Fragment {
         }
         item.setInventoryCode(inventoryCode);
         item.setName(name);
-        item.setBrand(brandSpinner.getText().toString());
-        item.setCategory(categorySpinner.getText().toString());
+        item.setBrand(brand);
+        item.setCategory(category);
         item.setPictures(picNumber);
         if (!barcodeEditText.getText().toString().equals("")) item.setBarCode(barcodeEditText.getText().toString());
         if (!descriptionEditText.getText().toString().equals("")) item.setDescription(descriptionEditText.getText().toString());
